@@ -6,3 +6,10 @@
 @import url("componentes/_extrato.css");
 @import url("componentes/_nova-transacao.css");
 @import url("componentes/_saldo.css");
+
+.logo {
+    width: 120px;
+    height: auto;
+    display: block;
+  }
+  
