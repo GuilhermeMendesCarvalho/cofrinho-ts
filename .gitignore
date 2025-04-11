@@ -1,0 +1,6 @@
+# dist pode ir se for projeto simples. Ignore se gerar tudo automaticamente
+node_modules/
+dist/
+*.log
+.env
+.DS_Store
