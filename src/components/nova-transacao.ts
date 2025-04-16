@@ -1,3 +1,6 @@
+import { tipoTransacao } from "../tipo-transacao.js";
+import { getSaldo, atualizarSaldo } from "./saldo.js";
+
 const elementoFormulario = document.querySelector(".block-nova-transacao form") as HTMLFormElement;
 
 if (elementoFormulario) {
@@ -13,30 +16,30 @@ if (elementoFormulario) {
     const inputValor = elementoFormulario.querySelector("#valor") as HTMLInputElement;
     const inputData = elementoFormulario.querySelector("#data") as HTMLInputElement;
 
-    let tipoTransacao = inputTipoTransacao.value;
-    let valor = parseFloat(inputValor.value.replace(',', '.'));
-    let data = inputData.value;
+    const tipoSelecionado = inputTipoTransacao.value as tipoTransacao;
+    const valor = parseFloat(inputValor.value.replace(',', '.'));
+    const data = new Date(inputData.value);
 
-    if (tipoTransacao === 'Depósito') {
-      saldo += valor;
-    } else if (tipoTransacao === 'Transferência' || tipoTransacao === 'Pagamento de Boleto') {
-      saldo -= valor;
+    let saldoAtual = getSaldo();
+
+    if (tipoSelecionado === tipoTransacao.DEPOSITO) {
+      saldoAtual += valor;
+    } else if (
+      tipoSelecionado === tipoTransacao.TRANSFERENCIA ||
+      tipoSelecionado === tipoTransacao.PAGAMENTO_BOLETO
+    ) {
+      saldoAtual -= valor;
     } else {
-      alert('tipo de transação é invalido!');
+      alert('Tipo de transação é inválido!');
       return;
     }
 
-    if (elementoSaldo) {
-      elementoSaldo.textContent = saldo.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: 'BRL'
-      });
-    }
+    atualizarSaldo(saldoAtual);
 
     const novaTransacao = {
-      tipoTransacao,
-      valor,
-      data
+      tipoTransacao: tipoSelecionado,
+      valor: valor,
+      data: data
     };
 
     console.log(novaTransacao);
